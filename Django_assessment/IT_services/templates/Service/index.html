@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IT Services - Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn-custom {
+            border-radius: 20px;
+        }
+        .alert-dismissible .close {
+            padding: 0.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Display Messages -->
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade in" role="alert"> 
+            <strong>Message:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+
+        <h1 class="text-center">IT Services</h1>
+
+        {% if user.is_authenticated %}
+        <h3 class="text-center">Hello {{ user.username }}!</h3>
+        <p class="text-center">You're successfully logged in.</p>
+        <div class="text-center mb-4">
+            <a href="{% url 'log_out' %}" class="btn btn-primary btn-custom">Logout</a>
+        </div>
+
+        <div class="mb-4">
+            <form method="get" id="serviceForm" class="form-inline text-center">
+                <div class="form-group">
+                    <label for="services" class="sr-only">Select a service:</label>
+                    <select name="services" id="services" class="form-control" onchange="this.form.submit()">
+                        <option value="">Select a service</option>
+                        <option value="{% url 'create_service' %}">Create Service</option>
+                        <option value="{% url 'list_service' %}">Service List</option>
+                    </select>
+                </div>
+            </form>
+            {% if request.GET.services %}
+                <meta http-equiv="refresh" content="0;url={{ request.GET.services }}">
+            {% endif %}
+        </div>
+
+        <div class="row">
+            {% for service in services %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ service.name }}</h5>
+                        <p class="card-text">Price: &#8377;{{ service.price }}</p>
+                        <p class="card-text">Tax: {{ service.tax }}%</p>
+                        <p class="card-text">Tax Amount: &#8377;{{ service.tax_amount }}</p>
+                        <p class="card-text">Total: &#8377;{{ service.total_price }}</p>
+                        {% if service.active %}
+                            <a href="{% url 'subscribe' service.id %}" class="btn btn-success btn-custom">Buy</a>
+                            <a href="{% url 'update_service' service.id %}" class="btn btn-warning btn-custom">Update</a>
+                            <a href="{% url 'delete_service' service.id %}" class="btn btn-danger btn-custom">Delete</a>
+                        {% else %}
+                            <p class="text-muted">This service is not active.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="text-center">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-custom">Register</a>
+            <a href="{% url 'log_in' %}" class="btn btn-secondary btn-custom">Login</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

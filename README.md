@@ -1,4 +1,4 @@
-##IT Services - Django Project
+## IT Services - Django Project
 Project Overview
 "IT Services" is a Django-based web application that allows users to register, log in, and manage IT-related services. The project includes user authentication, service management, and integration with the Razorpay payment gateway for service subscriptions. The key features include CRUD operations for services, user registration with OTP verification, and payment handling through Razorpay.
 

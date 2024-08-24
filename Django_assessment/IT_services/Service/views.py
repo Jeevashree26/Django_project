@@ -245,9 +245,6 @@ def razorpay_callback(request):
         signature = data.get('razorpay_signature')
         subscription_id = data.get('subscription_id')
         
-        # if not subscription_id:
-        #     return JsonResponse({'status': 'error', 'message': 'Subscription ID is missing'}, status=400)
-        # Validate the signature
         try:
             client.utility.verify_payment_signature({
                 'razorpay_order_id': order_id,
@@ -255,20 +252,33 @@ def razorpay_callback(request):
                 'razorpay_signature': signature
             })
             
-            # Fetch the payment details
             payment = client.payment.fetch(payment_id)
+            subscription = get_object_or_404(Subscription, id=subscription_id)
             
             if payment['status'] == 'captured':
-                # Update subscription status
-                subscription = get_object_or_404(Subscription, id=subscription_id)
                 subscription.payment_status = 'Paid'
                 subscription.transaction_id = payment_id
                 subscription.save()
-                
-                return JsonResponse({'status': 'success'})
+
+                context = {
+                    'status': 'success',
+                    'transaction_id': payment_id,
+                    'service_name': subscription.service.name,
+                    'amount_paid': subscription.amount
+                }
+                return render(request, 'Service/payment_status.html', context)
             else:
-                return JsonResponse({'status': 'failed'}, status=400)
+                context = {
+                    'status': 'failed',
+                    'service_name': subscription.service.name,
+                    'amount_paid': subscription.amount
+                }
+                return render(request, 'Service/payment_status.html', context)
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            context = {
+                'status': 'error',
+                'message': str(e)
+            }
+            return render(request, 'Service/payment_status.html', context)
     
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

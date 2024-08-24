@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Payment Status</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if status == 'success' %}
+                            <div class="alert alert-success" role="alert">
+                                <strong>Success!</strong> Your payment was successful. Thank you for your purchase!
+                            </div>
+                            <h4>Transaction Details</h4>
+                            <p><strong>Transaction ID:</strong> {{ transaction_id }}</p>
+                            <p><strong>Service Name:</strong> {{ service_name }}</p>
+                            <p><strong>Amount Paid:</strong> ₹{{ amount_paid }}</p>
+                        {% elif status == 'failed' %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Error!</strong> Your payment could not be processed. Please try again.
+                            </div>
+                            <h4>Transaction Details</h4>
+                            <p><strong>Service Name:</strong> {{ service_name }}</p>
+                            <p><strong>Amount:</strong> ₹{{ amount_paid }}</p>
+                        {% elif status == 'error' %}
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Warning!</strong> {{ message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">
+                                Payment status is unknown. Please contact support if you need assistance.
+                            </div>
+                        {% endif %}
+                        <a href="{% url 'home' %}" class="btn btn-primary">Return to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

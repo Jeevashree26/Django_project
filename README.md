@@ -2,7 +2,7 @@
 Project Overview
 "IT Services" is a Django-based web application that allows users to register, log in, and manage IT-related services. The project includes user authentication, service management, and integration with the Razorpay payment gateway for service subscriptions. The key features include CRUD operations for services, user registration with OTP verification, and payment handling through Razorpay.
 
-Project Structure
+## Project Structure
 IT-Services/
 │
 ├── it_services/
@@ -38,27 +38,27 @@ IT-Services/
 ├── manage.py
 └── README.md
 
-##Features
+## Features
   User Registration with OTP Verification:
   Users can register with an email address.
   An OTP is sent to the user's email for verification.
   Users are redirected to an OTP confirmation page.
   
-##User Authentication:
+## User Authentication:
   Only logged-in users can access the home view and manage services.
   Users are redirected to the login page if not authenticated.
   
-##Service Management:
+## Service Management:
   CRUD operations for services.
   Services have fields like name, price, tax, and active status.
   Only active services are displayed on the home page.
   
-##Subscription and Payment Handling:
+## Subscription and Payment Handling:
   Users can subscribe to services by providing an address and making payments via Razorpay.
   Subscription details and payment status are stored in the database.
   
 Setup Instructions
-##Prerequisites
+## Prerequisites
 Python 3.x
 Django 4.x
 Razorpay API credentials (provided in the project)
@@ -92,7 +92,7 @@ Run the development server:
 python manage.py runserver
 Access the application: Open your web browser and go to http://127.0.0.1:8000/.
 
-##Project Functionalities
+## Project Functionalities
 1. Admin Panel Configuration
 Access the admin panel at http://127.0.0.1:8000/admin/.
 Log in using the superuser credentials created earlier.
@@ -113,7 +113,7 @@ Payment is handled through Razorpay, and the status is stored in the "Subscripti
 Upon successful payment, the user is redirected to a success page displaying the transaction details.
 In case of payment failure, the user is redirected to a failure page.
 
-##Usage
+## Usage
 Admin Panel: Manage services, users, and subscriptions.
 Home View: Logged-in users can view and subscribe to services.
 Razorpay Integration: Secure payment handling for service subscriptions.

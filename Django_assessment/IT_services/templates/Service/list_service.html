@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Services</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Services List</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Payment Terms</th>
+                    <th>Price</th>
+                    <th>Package</th>
+                    <th>Tax</th>
+                    <th>Status</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                <tr>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.payment_terms }}</td>
+                    <td>₹{{ service.price }}</td>
+                    <td>{{ service.package }}</td>
+                    <td>{{ service.tax }}%</td>
+                    <td>{{ service.active|yesno:"Active,Inactive" }}</td>
+                    <td><img src="{{ service.image.url }}" alt="{{ service.name }}" style="width:100px;"/></td>
+                    <td>
+                        <a href="{% url 'update_service' service.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_service' service.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No services available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'create_service' %}" class="btn btn-primary">Create New Service</a>
+        <a href="{% url 'home' %}" class="btn btn-default mt-2">Back to Home</a>
+    </div>
+</body>
+</html>

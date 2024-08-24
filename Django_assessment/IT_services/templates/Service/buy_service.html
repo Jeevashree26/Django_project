@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Service</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            background-color: #fff;
+        }
+        .btn-custom {
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .alert-dismissible .close {
+            padding: 0.5rem;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d9534f;
+        }
+        .service-details {
+            margin-bottom: 20px;
+        }
+        .service-details p {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2 class="text-center">Buy {{ service.name }}</h2>
+            <div class="service-details">
+                <p><strong>Price:</strong> ₹{{ service.price }}</p>
+                <p><strong>GST:</strong> {{ service.tax }}%</p>
+                <p class="total-amount"><strong>Total:</strong> ₹{{ amount|floatformat:2 }}</p>
+            </div>
+
+            <form id="razorpay-form" method="POST" action="{% url 'razorpay_callback' %}">
+                <script
+                    src="https://checkout.razorpay.com/v1/checkout.js"
+                    data-key="{{ razorpay_key_id }}"
+                    data-amount="{{ amount }}"
+                    data-currency="{{ currency }}"
+                    data-order_id="{{ razorpay_order_id }}"
+                    data-buttontext="Pay with Razorpay"
+                    data-name="IT Services"
+                    data-description="Payment for {{ service.name }}"
+                    data-image=""
+                    data-prefill.name="{{ request.user.username }}"
+                    data-prefill.email="{{ request.user.email }}"
+                    data-theme.color="#F37254"
+                ></script>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <input type="hidden" name="subscription_id" value="{{ subscription.id }}"> 
+            </form>
+        </div>
+    </div>
+</body>
+</html>
